@@ -18,14 +18,14 @@ export const Footer = () => {
   const isLocalNetwork = targetNetwork.id === hardhat.id;
 
   return (
-    <div className="min-h-0 py-5 px-1 mb-11 lg:mb-0">
+    <div className="min-h-0 px-1 py-5 mb-11 lg:mb-0">
       <div>
-        <div className="fixed flex justify-between items-center w-full z-10 p-4 bottom-0 left-0 pointer-events-none">
-          <div className="flex flex-col md:flex-row gap-2 pointer-events-auto">
+        <div className="fixed bottom-0 left-0 z-10 flex items-center justify-between w-full p-4 pointer-events-none">
+          <div className="flex flex-col gap-2 pointer-events-auto md:flex-row">
             {nativeCurrencyPrice > 0 && (
               <div>
-                <div className="btn btn-primary btn-sm font-normal gap-1 cursor-auto">
-                  <CurrencyDollarIcon className="h-4 w-4" />
+                <div className="gap-1 font-normal cursor-auto btn btn-primary btn-sm">
+                  <CurrencyDollarIcon className="w-4 h-4" />
                   <span>{nativeCurrencyPrice}</span>
                 </div>
               </div>
@@ -33,8 +33,8 @@ export const Footer = () => {
             {isLocalNetwork && (
               <>
                 <Faucet />
-                <Link href="/blockexplorer" passHref className="btn btn-primary btn-sm font-normal gap-1">
-                  <MagnifyingGlassIcon className="h-4 w-4" />
+                <Link href="/blockexplorer" passHref className="gap-1 font-normal btn btn-primary btn-sm">
+                  <MagnifyingGlassIcon className="w-4 h-4" />
                   <span>Block Explorer</span>
                 </Link>
               </>
@@ -44,20 +44,20 @@ export const Footer = () => {
         </div>
       </div>
       <div className="w-full">
-        <ul className="menu menu-horizontal w-full">
-          <div className="flex justify-center items-center gap-2 text-sm w-full">
+        <ul className="w-full menu menu-horizontal">
+          <div className="flex items-center justify-center w-full gap-2 text-sm">
             <div className="text-center">
               <a href="https://github.com/scaffold-eth/se-2" target="_blank" rel="noreferrer" className="link">
                 Fork me
               </a>
             </div>
             <span>·</span>
-            <div className="flex justify-center items-center gap-2">
+            <div className="flex items-center justify-center gap-2">
               <p className="m-0 text-center">
-                Built with <HeartIcon className="inline-block h-4 w-4" /> at
+                Built with <HeartIcon className="inline-block w-4 h-4" /> at
               </p>
               <a
-                className="flex justify-center items-center gap-1"
+                className="flex items-center justify-center gap-1"
                 href="https://buidlguidl.com/"
                 target="_blank"
                 rel="noreferrer"
