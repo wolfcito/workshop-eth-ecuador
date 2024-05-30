@@ -30,7 +30,7 @@ const config: HardhatUserConfig = {
       },
     },
   },
-  defaultNetwork: "localhost",
+  defaultNetwork: "modetest",
   namedAccounts: {
     deployer: {
       // By default, it will take the first Hardhat account as the deployer
@@ -117,6 +117,19 @@ const config: HardhatUserConfig = {
     pgnTestnet: {
       url: "https://sepolia.publicgoods.network",
       accounts: [deployerPrivateKey],
+    },
+    // mode chains
+    modetest: {
+      url: "https://sepolia.mode.network",
+      chainId: 919,
+      accounts: [deployerPrivateKey], //BE VERY CAREFUL, DO NOT PUSH THIS TO GITHUB
+      gasPrice: 1000000000,
+    },
+    mode: {
+      url: "https://mainnet.mode.network",
+      chainId: 34443,
+      accounts: [deployerPrivateKey], //BE VERY CAREFUL, DO NOT PUSH THIS TO GITHUB
+      // gasPrice: 10000,
     },
   },
   // configuration for harhdat-verify plugin
