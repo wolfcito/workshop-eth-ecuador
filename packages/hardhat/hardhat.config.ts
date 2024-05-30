@@ -135,6 +135,24 @@ const config: HardhatUserConfig = {
   // configuration for harhdat-verify plugin
   etherscan: {
     apiKey: `${etherscanApiKey}`,
+    customChains: [
+      {
+        network: "modetest",
+        chainId: 919,
+        urls: {
+          apiURL: "https://sepolia.explorer.mode.network/api",
+          browserURL: "https://sepolia.explorer.mode.network/",
+        },
+      },
+      {
+        network: "mode",
+        chainId: 34443,
+        urls: {
+          apiURL: "https://explorer.mode.network/api",
+          browserURL: "https://explorer.mode.network/",
+        },
+      },
+    ],
   },
   // configuration for etherscan-verify from hardhat-deploy plugin
   verify: {
