@@ -96,6 +96,16 @@ export const useTransactor = (_walletClient?: WalletClient): TransactionFunc => 
       console.log("blockExplorerInternalTxURL", blockExplorerInternalTxURL);
 
       await sendNotifications(blockExplorerInternalTxURL);
+
+      notification.success(
+        <TxnNotification
+          message="Notificación enviada correctamente!"
+          blockExplorerLink={blockExplorerInternalTxURL}
+        />,
+        {
+          icon: "🎉",
+        },
+      );
       if (options?.onBlockConfirmation) options.onBlockConfirmation(transactionReceipt);
     } catch (error: any) {
       if (notificationId) {
