@@ -5,6 +5,78 @@
 import { GenericContractsDeclaration } from "~~/utils/scaffold-eth/contract";
 
 const deployedContracts = {
+  919: {
+    YourContract: {
+      address: "0xee72120c824549f2510b7398b7ef8b87E537D47B",
+      abi: [
+        {
+          inputs: [],
+          stateMutability: "nonpayable",
+          type: "constructor",
+        },
+        {
+          anonymous: false,
+          inputs: [
+            {
+              indexed: true,
+              internalType: "address",
+              name: "_from",
+              type: "address",
+            },
+            {
+              indexed: true,
+              internalType: "address",
+              name: "_to",
+              type: "address",
+            },
+            {
+              indexed: false,
+              internalType: "uint256",
+              name: "_amount",
+              type: "uint256",
+            },
+          ],
+          name: "PaymentSent",
+          type: "event",
+        },
+        {
+          stateMutability: "payable",
+          type: "fallback",
+        },
+        {
+          inputs: [],
+          name: "owner",
+          outputs: [
+            {
+              internalType: "address",
+              name: "",
+              type: "address",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "address payable",
+              name: "_to",
+              type: "address",
+            },
+          ],
+          name: "sendPayment",
+          outputs: [],
+          stateMutability: "payable",
+          type: "function",
+        },
+        {
+          stateMutability: "payable",
+          type: "receive",
+        },
+      ],
+      inheritedFunctions: {},
+    },
+  },
   31337: {
     YourContract: {
       address: "0x5FbDB2315678afecb367f032d93F642f64180aa3",
