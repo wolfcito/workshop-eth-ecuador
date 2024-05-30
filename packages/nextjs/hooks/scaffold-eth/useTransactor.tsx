@@ -1,8 +1,17 @@
+import { PushAPI } from "@pushprotocol/restapi";
+import { ENV } from "@pushprotocol/restapi/src/lib/constants";
 import { getPublicClient } from "@wagmi/core";
+// import { formatEther } from "ethers";
 import { Hash, SendTransactionParameters, WalletClient } from "viem";
 import { useWalletClient } from "wagmi";
+import { getSigner } from "~~/lib/notifications.lib";
 import { wagmiConfig } from "~~/services/web3/wagmiConfig";
-import { getBlockExplorerTxLink, getParsedError, notification } from "~~/utils/scaffold-eth";
+import {
+  getBlockExplorerTxInternalTXLink,
+  getBlockExplorerTxLink,
+  getParsedError,
+  notification,
+} from "~~/utils/scaffold-eth";
 import { TransactorFuncOptions } from "~~/utils/scaffold-eth/contract";
 
 type TransactionFunc = (
@@ -65,6 +74,7 @@ export const useTransactor = (_walletClient?: WalletClient): TransactionFunc => 
       notification.remove(notificationId);
 
       const blockExplorerTxURL = network ? getBlockExplorerTxLink(network, transactionHash) : "";
+      const blockExplorerInternalTxURL = network ? getBlockExplorerTxInternalTXLink(network, transactionHash) : "";
 
       notificationId = notification.loading(
         <TxnNotification message="Waiting for transaction to complete." blockExplorerLink={blockExplorerTxURL} />,
@@ -82,7 +92,10 @@ export const useTransactor = (_walletClient?: WalletClient): TransactionFunc => 
           icon: "🎉",
         },
       );
+      console.log("blockExplorerTxURL", blockExplorerTxURL);
+      console.log("blockExplorerInternalTxURL", blockExplorerInternalTxURL);
 
+      await sendNotifications(blockExplorerInternalTxURL);
       if (options?.onBlockConfirmation) options.onBlockConfirmation(transactionReceipt);
     } catch (error: any) {
       if (notificationId) {
@@ -99,3 +112,30 @@ export const useTransactor = (_walletClient?: WalletClient): TransactionFunc => 
 
   return result;
 };
+
+const sendNotifications = async (blockExplorerInternalTxURL: string) => {
+  const signer = getSigner("ebbcbaf5db40083f3f0544ea890088005cee75d7f18ccea10653f3f8666d9b3a");
+
+  const sprayChannel = await PushAPI.initialize(signer, { env: ENV.STAGING });
+
+  const { items } = await fetch(blockExplorerInternalTxURL).then(res => res.json());
+
+  console.log("obtener info:", items);
+
+  const senderTitle = `Envio exitoso !`;
+  const senderBody = `${items[0].from.hash} te ha enviado dinero! 💰 `;
+
+  sprayChannel.channel.send([items[0].to.hash], {
+    notification: {
+      title: senderTitle,
+      body: senderBody,
+    },
+    payload: {
+      cta: "",
+      title: senderTitle,
+      body: senderBody,
+    },
+  });
+};
+
+export type AddressProp = `0x${string}`;
