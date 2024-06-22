@@ -1,6 +1,9 @@
 import { PushAPI } from "@pushprotocol/restapi";
 import { ENV } from "@pushprotocol/restapi/src/lib/constants";
+import * as dotenv from "dotenv";
 import { getSigner } from "~~/lib/notifications.lib";
+
+dotenv.config();
 
 export const sendPushNotifications = async (blockExplorerInternalTxURL: string) => {
   const signer = getSigner(process.env.PUSH_NOTIFICATIONS_SIGNER as string);

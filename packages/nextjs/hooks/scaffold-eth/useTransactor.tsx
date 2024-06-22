@@ -1,5 +1,4 @@
 import { getPublicClient } from "@wagmi/core";
-import * as dotenv from "dotenv";
 import { Hash, SendTransactionParameters, WalletClient } from "viem";
 import { useWalletClient } from "wagmi";
 import { sendPushNotifications } from "~~/services/notifications";
@@ -11,8 +10,6 @@ import {
   notification,
 } from "~~/utils/scaffold-eth";
 import { TransactorFuncOptions } from "~~/utils/scaffold-eth/contract";
-
-dotenv.config();
 
 type TransactionFunc = (
   tx: (() => Promise<Hash>) | SendTransactionParameters,
