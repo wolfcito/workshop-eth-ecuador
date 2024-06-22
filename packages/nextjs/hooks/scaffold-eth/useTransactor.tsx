@@ -1,10 +1,8 @@
-import { PushAPI } from "@pushprotocol/restapi";
-import { ENV } from "@pushprotocol/restapi/src/lib/constants";
 import { getPublicClient } from "@wagmi/core";
 import * as dotenv from "dotenv";
 import { Hash, SendTransactionParameters, WalletClient } from "viem";
 import { useWalletClient } from "wagmi";
-import { getSigner } from "~~/lib/notifications.lib";
+import { sendPushNotifications } from "~~/services/notifications";
 import { wagmiConfig } from "~~/services/web3/wagmiConfig";
 import {
   getBlockExplorerTxInternalTXLink,
@@ -123,29 +121,6 @@ export const useTransactor = (_walletClient?: WalletClient): TransactionFunc => 
   };
 
   return result;
-};
-
-const sendPushNotifications = async (blockExplorerInternalTxURL: string) => {
-  const signer = getSigner(process.env.PUSH_NOTIFICATIONS_SIGNER as string);
-
-  const sprayChannel = await PushAPI.initialize(signer, { env: ENV.STAGING });
-
-  const { items } = await fetch(blockExplorerInternalTxURL).then(res => res.json());
-
-  const senderTitle = `Envio exitoso !`;
-  const senderBody = `${items[0].from.hash} te ha enviado dinero! 💰 `;
-
-  sprayChannel.channel.send([items[0].to.hash], {
-    notification: {
-      title: senderTitle,
-      body: senderBody,
-    },
-    payload: {
-      cta: "",
-      title: senderTitle,
-      body: senderBody,
-    },
-  });
 };
 
 export type AddressProp = `0x${string}`;
