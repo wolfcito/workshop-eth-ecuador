@@ -1,7 +1,7 @@
 import { PushAPI } from "@pushprotocol/restapi";
 import { ENV } from "@pushprotocol/restapi/src/lib/constants";
 import { getPublicClient } from "@wagmi/core";
-// import { formatEther } from "ethers";
+import * as dotenv from "dotenv";
 import { Hash, SendTransactionParameters, WalletClient } from "viem";
 import { useWalletClient } from "wagmi";
 import { getSigner } from "~~/lib/notifications.lib";
@@ -13,6 +13,8 @@ import {
   notification,
 } from "~~/utils/scaffold-eth";
 import { TransactorFuncOptions } from "~~/utils/scaffold-eth/contract";
+
+dotenv.config();
 
 type TransactionFunc = (
   tx: (() => Promise<Hash>) | SendTransactionParameters,
@@ -95,7 +97,7 @@ export const useTransactor = (_walletClient?: WalletClient): TransactionFunc => 
       console.log("blockExplorerTxURL", blockExplorerTxURL);
       console.log("blockExplorerInternalTxURL", blockExplorerInternalTxURL);
 
-      await sendNotifications(blockExplorerInternalTxURL);
+      await sendPushNotifications(blockExplorerInternalTxURL);
 
       notification.success(
         <TxnNotification
@@ -123,14 +125,12 @@ export const useTransactor = (_walletClient?: WalletClient): TransactionFunc => 
   return result;
 };
 
-const sendNotifications = async (blockExplorerInternalTxURL: string) => {
-  const signer = getSigner("ebbcbaf5db40083f3f0544ea890088005cee75d7f18ccea10653f3f8666d9b3a");
+const sendPushNotifications = async (blockExplorerInternalTxURL: string) => {
+  const signer = getSigner(process.env.PUSH_NOTIFICATIONS_SIGNER as string);
 
   const sprayChannel = await PushAPI.initialize(signer, { env: ENV.STAGING });
 
   const { items } = await fetch(blockExplorerInternalTxURL).then(res => res.json());
-
-  console.log("obtener info:", items);
 
   const senderTitle = `Envio exitoso !`;
   const senderBody = `${items[0].from.hash} te ha enviado dinero! 💰 `;
